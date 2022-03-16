@@ -48,7 +48,7 @@ namespace KinectWpf
                 {
                     KinectSerializer.DeserializeFrame();
                 }
-                //VirtualKinectStart();
+                VirtualKinectStart();
             }
         }
         ~MainWindow()
@@ -85,13 +85,13 @@ namespace KinectWpf
                 kinect.Start();
             }
         }
-
-        //private static void VirtualKinectStart()
-        //{
-        //    var vk = new VirtualKinect();
-        //    vk.Enable();
-        //    vk.SkeletonFrameReady += new EventHandler<VirtualFrameReadyEventArgs>(SkeletonDrawer);
-        //}
+        
+        private static void VirtualKinectStart()
+        {
+            var vk = new VirtualKinect();
+            vk.SkeletonFrameReady += new EventHandler<MySkeletonFrameEventArgs>(MySkeletonFrameReady);
+            vk.Start();
+        }
 
         static void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs args)
         {
@@ -119,6 +119,12 @@ namespace KinectWpf
                         }
                     }
                 }
+        }
+
+        static void MySkeletonFrameReady(object sender, MySkeletonFrameEventArgs args)
+        {
+            Console.WriteLine("We are here :D");
+            Console.WriteLine("We are here :D");
         }
 
         public static void SkeletonDrawer(MySkeleton2 user)

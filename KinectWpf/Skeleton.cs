@@ -1,11 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Kinect;
-using System.Threading.Tasks;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using System.IO.Compression;
@@ -14,7 +9,6 @@ namespace KinectWpf
 {
     public class KinectSerializer
     {
-
         static Stream s;
         static BinaryFormatter bf;
 
@@ -86,11 +80,6 @@ namespace KinectWpf
                 s.Close();
             }
         }
-    }
-
-    public class VirtualKinect
-    {
-
     }
 
     [Serializable]
