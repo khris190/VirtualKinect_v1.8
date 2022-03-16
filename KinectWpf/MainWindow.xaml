@@ -1,0 +1,220 @@
+﻿<Window x:Class="KinectWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KinectWpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="57*"/>
+            <ColumnDefinition Width="743*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas x:Name="MainCanvas" Height="400" Width="400" Margin="0,0,400,34">
+
+            <Ellipse x:Name="Point000" Height="10" Canvas.Left="780" Stroke="Black" Canvas.Top="414" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+
+            <Ellipse x:Name="Point001" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point002" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point003" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point004" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point005" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point006" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point007" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point008" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point009" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point010" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point011" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point012" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point013" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point014" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point015" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point016" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point017" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point018" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Ellipse x:Name="Point019" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Canvas>
+
+    </Grid>
+</Window>
