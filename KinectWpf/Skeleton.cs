@@ -15,35 +15,30 @@ namespace KinectWpf
     public class KinectSerializer
     {
 
-        private const string filesDir = "./data";
-        private const string dataFile = "./data/temp.dat";
-        private const string zipFile = "temp.zip";
-
         static Stream s;
-        static
-            BinaryFormatter bf;
+        static BinaryFormatter bf;
 
         public static void InitWrite(bool doDelete = false)
         {
             if (doDelete)
             {
-                if (File.Exists(dataFile))
+                if (File.Exists(Config.FileName))
                 {
-                    File.Delete(dataFile);
+                    File.Delete(Config.FileName);
                 }
-                if (File.Exists(zipFile))
+                if (File.Exists(Config.ZipName))
                 {
-                    File.Delete(zipFile);
+                    File.Delete(Config.ZipName);
                 }
             }
 
-            s = File.OpenWrite(dataFile);
+            s = File.OpenWrite(Config.FileName);
             bf = new BinaryFormatter();
         }
 
         public static void InitRead()
         {
-            s = File.OpenRead(dataFile);
+            s = File.OpenRead(Config.FileName);
             bf = new BinaryFormatter();
         }
 
@@ -55,12 +50,36 @@ namespace KinectWpf
             }
         }
 
-        public static void CompressData()
+        public static MySkeleton2 DeserializeFrame()
         {
-            ZipFile.CreateFromDirectory(filesDir, zipFile);
+            MySkeleton2 result = new MySkeleton2();
+            try
+            {
+                result = (MySkeleton2)bf.Deserialize(s);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            return result;
         }
 
-        ~SerializeKinectData()
+        public static void TestSerialize(int val)
+        {
+            if (bf != null)
+            {
+                MySkeleton2 testSkeleton = new MySkeleton2(val);
+                bf.Serialize(s, testSkeleton);
+            }
+        }
+
+        public static void CompressData()
+        {
+            s.Close();
+            ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);
+        }
+
+        ~KinectSerializer()
         {
             if (s != null)
             {
@@ -80,30 +99,41 @@ namespace KinectWpf
         long timeStamp;
         public const int jointsSize = 20;
         [Serializable]
-        public struct MyJoint
+        public struct Point
         {
             public float X, Y, Z;
+        }
+
+        [Serializable]
+        public struct MyJoint
+        {
+            public Point Position;
             public short jointType;
             public short trackingState;
             public static implicit operator MyJoint(Joint input)
             {
-                return new MyJoint {jointType = (short)input.JointType, 
-                                    trackingState = (short)input.TrackingState,
-                                    X = input.Position.X,
-                                    Y = input.Position.Y,
-                                    Z = input.Position.Z };
+                MyJoint ret = new MyJoint
+                {
+                    jointType = (short)input.JointType,
+                    trackingState = (short)input.TrackingState
+                };
+                ret.Position = new Point();
+                ret.Position.X = input.Position.X;
+                ret.Position.Y = input.Position.Y;
+                ret.Position.Z = input.Position.Z;
+                return ret;         
             }
         }
-        public MyJoint[] joints;
+        public MyJoint[] Joints;
 
         public MySkeleton2(Skeleton skeleton)
         {
             //Joint join = new Joint()
             timeStamp = DateTime.Now.ToFileTimeUtc();
-            joints = new MyJoint[20];
+            Joints = new MyJoint[20];
             for (int i = 0; i < 20; i++)
             {
-                joints[i] = skeleton.Joints[(JointType)i];
+                Joints[i] = skeleton.Joints[(JointType)i];
             }
         }
 
@@ -116,11 +146,11 @@ namespace KinectWpf
         public MySkeleton2(int timestamp)
         {
             this.timeStamp = timestamp;
-            joints = new MyJoint[20];
+            Joints = new MyJoint[20];
         }
         public MySkeleton2()
         {
-            joints = new MyJoint[20];
+            Joints = new MyJoint[20];
         }
     }
 }

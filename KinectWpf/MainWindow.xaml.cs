@@ -32,19 +32,28 @@ namespace KinectWpf
             if (recordActive)
             {
                 // Record
-                SerializeKinectData.InitWrite(true);
+                KinectSerializer.InitWrite(true);
+                for (int i = 0; i < 2; i++)
+                {
+                    KinectSerializer.TestSerialize(i); 
+
+                }
                 KinectStart();
             }
             else
             {
                 // Play
-                SerializeKinectData.InitRead();
-                VirtualKinectStart();
+                KinectSerializer.InitRead();
+                for (int i = 0; i < 3; i++)
+                {
+                    KinectSerializer.DeserializeFrame();
+                }
+                //VirtualKinectStart();
             }
         }
         ~MainWindow()
         {
-            SerializeKinectData.CompressData();
+            KinectSerializer.CompressData();
         }
 
 
@@ -77,12 +86,12 @@ namespace KinectWpf
             }
         }
 
-        private static void VirtualKinectStart()
-        {
-            var vk = new VirtualKinect();
-            vk.Enable();
-            vk.SkeletonFrameReady += new EventHandler<VirtualFrameReadyEventArgs>(SkeletonDrawer);
-        }
+        //private static void VirtualKinectStart()
+        //{
+        //    var vk = new VirtualKinect();
+        //    vk.Enable();
+        //    vk.SkeletonFrameReady += new EventHandler<VirtualFrameReadyEventArgs>(SkeletonDrawer);
+        //}
 
         static void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs args)
         {
@@ -99,7 +108,7 @@ namespace KinectWpf
 
                         if (user != null)
                         {
-                            SerializeKinectData.SerializeFrame(user);
+                            KinectSerializer.SerializeFrame(user);
                             Console.WriteLine("User is not null");
 
                             SkeletonDrawer(user);
@@ -116,8 +125,8 @@ namespace KinectWpf
         {
             for (int i = 0; i < 20; i++)
             {
-                Canvas.SetLeft(ellipses[i], (user.joints[i].X + 1) * 200);
-                Canvas.SetTop(ellipses[i], 400 - (user.joints[i].Y + 1) * 200);
+                Canvas.SetLeft(ellipses[i], (user.Joints[i].Position.X + 1) * 200);
+                Canvas.SetTop(ellipses[i], 400 - (user.Joints[i].Position.Y + 1) * 200);
             }
         }
     }
