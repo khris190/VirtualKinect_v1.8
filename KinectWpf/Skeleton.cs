@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Microsoft.Kinect;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -70,7 +71,10 @@ namespace KinectWpf
         public static void CompressData()
         {
             s.Close();
-            ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);
+            if (!File.Exists(Config.ZipName))
+            {
+                ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);*
+            }
         }
 
         ~KinectSerializer()
@@ -82,10 +86,61 @@ namespace KinectWpf
         }
     }
 
+    public class KinectDeserializer
+    {
+        static Stream s;
+        static BinaryFormatter bf;
+
+        public static void InitRead(string FileName = Config.FileName)
+        {
+            s = File.OpenRead(FileName);
+            bf = new BinaryFormatter();
+        }
+
+        public static Queue<MySkeleton2> DeserializeAll()
+        {
+            Queue<MySkeleton2> result = new Queue<MySkeleton2>();
+            MySkeleton2 tempSkel;
+            tempSkel = DeserializeNextFrame();
+            do
+            {
+                result.Enqueue(tempSkel);
+                tempSkel = DeserializeNextFrame();
+            } while (tempSkel != null);
+            return result;
+        }
+
+        public static MySkeleton2 DeserializeNextFrame()
+        {
+            MySkeleton2 result = new MySkeleton2();
+            try
+            {
+                result = (MySkeleton2)bf.Deserialize(s);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            return result;
+        }
+        public static void DecompressData(string ZipName = Config.ZipName, string FileName = Config.FilesPath)
+        {
+            ZipFile.ExtractToDirectory(ZipName, FileName);
+        }
+
+        ~KinectDeserializer()
+        {
+            if (s != null)
+            {
+                s.Close();
+            }
+        }
+    }
+
     [Serializable]
     public class MySkeleton2
     {
-        long timeStamp;
+        public long timeStamp;
         public const int jointsSize = 20;
         [Serializable]
         public struct Point
@@ -125,9 +180,20 @@ namespace KinectWpf
                 Joints[i] = skeleton.Joints[(JointType)i];
             }
         }
+        public MySkeleton2(MySkeleton2 skeleton)
+        {
+            //Joint join = new Joint()
+            timeStamp = skeleton.timeStamp;
+            Joints = new MyJoint[20];
+            for (int i = 0; i < 20; i++)
+            {
+                Joints[i] = skeleton.Joints[i];
+            }
+        }
 
         public static implicit operator MySkeleton2(Skeleton skeleton)
         {
+
             return new MySkeleton2(skeleton);
         }
 

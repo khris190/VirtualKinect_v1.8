@@ -123,8 +123,8 @@ namespace KinectWpf
 
         static void MySkeletonFrameReady(object sender, MySkeletonFrameEventArgs args)
         {
-            Console.WriteLine("We are here :D");
-            Console.WriteLine("We are here :D");
+            System.Windows.Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
+               
         }
 
         public static void SkeletonDrawer(MySkeleton2 user)
