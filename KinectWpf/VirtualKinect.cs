@@ -31,7 +31,7 @@ namespace KinectWpf
         public void Start()
         {
             var skeleton = new MySkeleton2();
-            KinectDeserializer.InitRead("nagranie-machanie.dat");
+            KinectDeserializer.InitRead();
             _skeletons = KinectDeserializer.DeserializeAll();
             DeleteFirstTwo();
             CalcualteOffset();
@@ -42,9 +42,10 @@ namespace KinectWpf
         private void DoTheReplay()
         {
             TimeSpan ts;
-            while (_skeletons.Count > 0)
+            var queue = _skeletons;
+            while (queue.Count > 0)
             {
-                var skelet = _skeletons.Dequeue();
+                var skelet = queue.Dequeue();
                 long test = (skelet.timeStamp - RecordingOffset);
                 long tics = skelet.timeStamp + RecordingOffset - DateTime.Now.ToFileTimeUtc();
                 if (tics > 0)

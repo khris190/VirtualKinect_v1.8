@@ -90,7 +90,7 @@ namespace KinectWpf
     {
         static Stream s;
         static BinaryFormatter bf;
-
+        
         public static void InitRead(string FileName = Config.FileName)
         {
             s = File.OpenRead(FileName);
