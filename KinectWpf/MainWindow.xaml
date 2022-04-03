@@ -214,14 +214,15 @@
             </Ellipse>
         </Canvas>
         <Canvas x:Name="ControlCanvas" Background="#FFF6F6F6" Margin="400,0,0,0" HorizontalAlignment="Left">
-            <Grid x:Name="ControlGrid" Height="434" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Grid x:Name="ControlGrid" Height="434" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="10">
                 <Label x:Name="MainLabel" Content="Kinect Recorder" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="24" FontWeight="Bold"/>
-                <Button x:Name="RecordButton" Content="Record" Margin="40,68,300,346" Width="60"/>
-                <Button x:Name="PlayButton" Content="Play" Margin="120,68,220,346" Width="60"/>
+                <Button x:Name="RecordButton" Content="Record" Margin="40,68,300,346" Width="60" Click="RecordButton_Click"/>
+                <Button x:Name="PlayButton" Content="Play" Margin="120,68,220,346" Width="60" Click="PlayButton_Click"/>
                 <Button x:Name="SaveAsButton" Content="Save as" Margin="300,68,40,346" Width="60"/>
-                <Button x:Name="LoadButton" Content="Load" Margin="210,68,110,346" Width="60"/>
+                <Button x:Name="LoadButton" Content="Load" Margin="210,68,110,346" Width="60" Click="LoadButton_Click"/>
+                <TextBlock x:Name="ErrorBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FFC50404" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,383,0,20"/>
+                <TextBlock x:Name="InfoBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FF08529D" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21"/>
             </Grid>
         </Canvas>
-
     </Grid>
 </Window>

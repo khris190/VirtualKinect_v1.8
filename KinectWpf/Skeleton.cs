@@ -70,11 +70,15 @@ namespace KinectWpf
 
         public static void CompressData()
         {
-            s.Close();
-            if (!File.Exists(Config.ZipName))
+            if (s != null)
             {
-                ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);
+                s.Close();
+                if (!File.Exists(Config.ZipName))
+                {
+                    ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);
+                }
             }
+            
         }
 
         ~KinectSerializer()

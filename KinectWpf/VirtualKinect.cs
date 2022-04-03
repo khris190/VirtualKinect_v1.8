@@ -27,23 +27,49 @@ namespace KinectWpf
 
         //variable for offseting recorded times to real time clock;
         private long RecordingOffset;
+        private Thread InstanceCaller;
+        private string _fileName;
+
+        public VirtualKinect(string fileName)
+        {
+            _fileName = fileName;
+        }
 
         public void Start()
         {
             var skeleton = new MySkeleton2();
-            KinectDeserializer.InitRead();
-            _skeletons = KinectDeserializer.DeserializeAll();
-            DeleteFirstTwo();
-            CalcualteOffset();
-            Thread InstanceCaller = new Thread(
-            new ThreadStart(DoTheReplay));
-            InstanceCaller.Start();
+            try
+            {
+                if (_fileName == null)
+                {
+                    throw new Exception("Please, select a file first.");
+                }
+                KinectDeserializer.InitRead(_fileName);
+                _skeletons = KinectDeserializer.DeserializeAll();
+                DeleteFirstTwo();
+                CalcualteOffset();
+                InstanceCaller = new Thread(new ThreadStart(DoTheReplay));
+                InstanceCaller.Start();
+            }
+            catch(Exception e)
+            {
+                throw new VirtualKinectException(e.Message);
+            }
         }
+
+        public void Stop()
+        {
+            if (InstanceCaller != null)
+            {
+                InstanceCaller.Abort();
+            }
+        }
+
         private void DoTheReplay()
         {
             TimeSpan ts;
             var queue = _skeletons;
-            while (queue.Count > 0)
+            while (queue.Count > 0 && InstanceCaller.IsAlive)
             {
                 var skelet = queue.Dequeue();
                 long test = (skelet.timeStamp - RecordingOffset);
@@ -87,6 +113,14 @@ namespace KinectWpf
         {
             EventHandler<MySkeletonFrameEventArgs> handler = SkeletonFrameReady;
             handler?.Invoke(this, e);
+        }
+    }
+
+    public class VirtualKinectException: Exception
+    {
+        public VirtualKinectException(string message): base(message)
+        {
+            //
         }
     }
 }

@@ -21,42 +21,41 @@ namespace KinectWpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        public bool recordActive = false;
 
-        public static bool recordActive = false;
+        private string _loadedFilePath;
+        private VirtualKinect _vk;
 
         public MainWindow()
         {
             InitializeComponent();
             SetPoints();
-
-            if (recordActive)
-            {
-                // Record
-                KinectSerializer.InitWrite(true);
-                for (int i = 0; i < 2; i++)
-                {
-                    KinectSerializer.TestSerialize(i); 
-
-                }
-                KinectStart();
-            }
-            else
-            {
-                // Play
-                KinectSerializer.InitRead();
-                for (int i = 0; i < 3; i++)
-                {
-                    KinectSerializer.DeserializeFrame();
-                }
-                VirtualKinectStart();
-            }
         }
+
         ~MainWindow()
         {
             KinectSerializer.CompressData();
         }
 
+        private void Record()
+        {
+            KinectSerializer.InitWrite(true);
+            for (int i = 0; i < 2; i++)
+            {
+                KinectSerializer.TestSerialize(i);
+            }
+            KinectStart();
+        }
 
+        private void Play()
+        {
+            KinectSerializer.InitRead();
+            for (int i = 0; i < 3; i++)
+            {
+                KinectSerializer.DeserializeFrame();
+            }
+            VirtualKinectStart();
+        }
 
         static List<System.Windows.Shapes.Ellipse> ellipses;
         Canvas canvas;
@@ -75,7 +74,7 @@ namespace KinectWpf
                 }
             }
         }
-        private static void KinectStart()
+        private void KinectStart()
         {
             var kinect = KinectSensor.KinectSensors.FirstOrDefault(s => s.Status == KinectStatus.Connected);
             if (null != kinect)
@@ -86,11 +85,23 @@ namespace KinectWpf
             }
         }
         
-        private static void VirtualKinectStart()
+        private void VirtualKinectStart()
         {
-            var vk = new VirtualKinect();
-            vk.SkeletonFrameReady += new EventHandler<MySkeletonFrameEventArgs>(MySkeletonFrameReady);
-            vk.Start();
+            if (_vk != null)
+            {
+                _vk.Stop();
+            }
+
+            try
+            {
+                _vk = new VirtualKinect(_loadedFilePath);
+                _vk.SkeletonFrameReady += new EventHandler<MySkeletonFrameEventArgs>(MySkeletonFrameReady);
+                _vk.Start();
+            }
+            catch (VirtualKinectException e)
+            {
+                ShowErrorMessage(e.Message);
+            }
         }
 
         static void SkeletonFrameReady(object sender, SkeletonFrameReadyEventArgs args)
@@ -123,8 +134,14 @@ namespace KinectWpf
 
         static void MySkeletonFrameReady(object sender, MySkeletonFrameEventArgs args)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
-               
+            try
+            {
+                System.Windows.Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
+            }
+            catch (Exception e)
+            {
+                throw new VirtualKinectException(e.Message);
+            }
         }
 
         public static void SkeletonDrawer(MySkeleton2 user)
@@ -134,6 +151,58 @@ namespace KinectWpf
                 Canvas.SetLeft(ellipses[i], (user.Joints[i].Position.X + 1) * 200);
                 Canvas.SetTop(ellipses[i], 400 - (user.Joints[i].Position.Y + 1) * 200);
             }
+        }
+
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            Play();
+        }
+
+        private void RecordButton_Click(object sender, RoutedEventArgs e)
+        {
+            Record();
+        }
+
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            Nullable<bool> result = openFileDlg.ShowDialog();
+            if (result == true)
+            {
+                _loadedFilePath = openFileDlg.FileName;
+                ShowInfoMessage("Loaded file: " + _loadedFilePath);
+            }
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            HideMessageBlocks();
+            ErrorBlock.Text = message;
+            ErrorBlock.Visibility = Visibility.Visible;
+        }
+
+        private void HideErrorMessageBlock()
+        {
+            ErrorBlock.Visibility = Visibility.Collapsed;
+        }
+
+        private void ShowInfoMessage(string message)
+        {
+            HideMessageBlocks();
+            InfoBlock.Text = message;
+            InfoBlock.Visibility = Visibility.Visible;
+        }
+
+        private void HideInfoMessageBlock()
+        {
+            InfoBlock.Visibility = Visibility.Collapsed;
+        }
+
+        private void HideMessageBlocks()
+        {
+            HideErrorMessageBlock();
+            HideInfoMessageBlock();
         }
     }
 }
