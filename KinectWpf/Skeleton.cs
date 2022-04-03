@@ -73,7 +73,7 @@ namespace KinectWpf
             s.Close();
             if (!File.Exists(Config.ZipName))
             {
-                ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);*
+                ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);
             }
         }
 
