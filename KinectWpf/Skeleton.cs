@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Kinect;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
 
 using System.IO.Compression;
 
@@ -73,7 +74,7 @@ namespace KinectWpf
             s.Close();
             if (!File.Exists(Config.ZipName))
             {
-                ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);*
+                ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);
             }
         }
 
@@ -208,4 +209,6 @@ namespace KinectWpf
             Joints = new MyJoint[20];
         }
     }
+
+
 }

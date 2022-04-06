@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectWpf", "KinectWpf\KinectWpf.csproj", "{B1D9622D-AFFE-4027-BDF1-376370EA5F1F}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KinectWpf", "KinectWpf\KinectWpf.csproj", "{B1D9622D-AFFE-4027-BDF1-376370EA5F1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PipeClientTestProject", "PipeClientTestProject\PipeClientTestProject.csproj", "{E95B18E8-ABFA-4431-A91E-64CE37BAE222}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +17,15 @@ Global
 		{B1D9622D-AFFE-4027-BDF1-376370EA5F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1D9622D-AFFE-4027-BDF1-376370EA5F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1D9622D-AFFE-4027-BDF1-376370EA5F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E95B18E8-ABFA-4431-A91E-64CE37BAE222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E95B18E8-ABFA-4431-A91E-64CE37BAE222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E95B18E8-ABFA-4431-A91E-64CE37BAE222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E95B18E8-ABFA-4431-A91E-64CE37BAE222}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36D00017-2FE8-4F21-A3BB-49F0882471E1}
 	EndGlobalSection
 EndGlobal

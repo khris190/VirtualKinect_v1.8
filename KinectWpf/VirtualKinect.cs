@@ -39,6 +39,19 @@ namespace KinectWpf
             new ThreadStart(DoTheReplay));
             InstanceCaller.Start();
         }
+
+        public void StartPipe()
+        {
+            KinectDeserializer.InitRead("nagranie-machanie.dat");
+            _skeletons = KinectDeserializer.DeserializeAll();
+            DeleteFirstTwo();
+            CalcualteOffset();
+            Thread InstanceCaller = new Thread(
+            new ThreadStart(DoTheReplayPipe));
+            InstanceCaller.Start();
+        }
+        
+        
         private void DoTheReplay()
         {
             TimeSpan ts;
@@ -53,6 +66,22 @@ namespace KinectWpf
                     Thread.Sleep(ts);
                 }
                 OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(skelet)));
+            }
+        }
+        private void DoTheReplayPipe()
+        {
+            TimeSpan ts;
+            while (_skeletons.Count > 0)
+            {
+                var skelet = _skeletons.Dequeue();
+                long test = (skelet.timeStamp - RecordingOffset);
+                long tics = skelet.timeStamp + RecordingOffset - DateTime.Now.ToFileTimeUtc();
+                if (tics > 0)
+                {
+                    ts = TimeSpan.FromTicks(tics);
+                    Thread.Sleep(ts);
+                }
+                VirtualKinectPipeServer.send(skelet);
             }
         }
 
@@ -88,4 +117,7 @@ namespace KinectWpf
             handler?.Invoke(this, e);
         }
     }
+
+
+
 }

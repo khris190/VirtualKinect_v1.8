@@ -58,6 +58,8 @@ namespace KinectWpf
 
 
 
+
+
         static List<System.Windows.Shapes.Ellipse> ellipses;
         Canvas canvas;
         private void SetPoints()
@@ -90,6 +92,7 @@ namespace KinectWpf
         {
             var vk = new VirtualKinect();
             vk.SkeletonFrameReady += new EventHandler<MySkeletonFrameEventArgs>(MySkeletonFrameReady);
+            //TODO wrocic do Start;
             vk.Start();
         }
 
@@ -120,11 +123,11 @@ namespace KinectWpf
                     }
                 }
         }
+        //TODO background task <- check it
 
         static void MySkeletonFrameReady(object sender, MySkeletonFrameEventArgs args)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
-               
+                System.Windows.Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
         }
 
         public static void SkeletonDrawer(MySkeleton2 user)
