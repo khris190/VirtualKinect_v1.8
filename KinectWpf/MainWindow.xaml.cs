@@ -138,6 +138,7 @@ namespace KinectWpf
             try
             {
                 System.Windows.Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
+                VirtualKinectPipeServer.send(args.user);
             }
             catch (Exception e)
             {
