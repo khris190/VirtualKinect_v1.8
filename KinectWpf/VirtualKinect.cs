@@ -27,37 +27,51 @@ namespace KinectWpf
 
         //variable for offseting recorded times to real time clock;
         private long RecordingOffset;
+        private Thread InstanceCaller;
+        private string _fileName;
+
+        public VirtualKinect(string fileName)
+        {
+            _fileName = fileName;
+        }
 
         public void Start()
         {
             var skeleton = new MySkeleton2();
-            KinectDeserializer.InitRead("nagranie-machanie.dat");
-            _skeletons = KinectDeserializer.DeserializeAll();
-            DeleteFirstTwo();
-            CalcualteOffset();
-            Thread InstanceCaller = new Thread(
-            new ThreadStart(DoTheReplay));
-            InstanceCaller.Start();
+            try
+            {
+                if (_fileName == null)
+                {
+                    throw new Exception("Please, select a file first.");
+                }
+                KinectDeserializer.InitRead(_fileName);
+                _skeletons = KinectDeserializer.DeserializeAll();
+                DeleteFirstTwo();
+                CalcualteOffset();
+                InstanceCaller = new Thread(new ThreadStart(DoTheReplay));
+                InstanceCaller.Start();
+            }
+            catch(Exception e)
+            {
+                throw new VirtualKinectException(e.Message);
+            }
         }
 
-        public void StartPipe()
+        public void Stop()
         {
-            KinectDeserializer.InitRead("nagranie-machanie.dat");
-            _skeletons = KinectDeserializer.DeserializeAll();
-            DeleteFirstTwo();
-            CalcualteOffset();
-            Thread InstanceCaller = new Thread(
-            new ThreadStart(DoTheReplayPipe));
-            InstanceCaller.Start();
+            if (InstanceCaller != null)
+            {
+                InstanceCaller.Abort();
+            }
         }
-        
-        
+
         private void DoTheReplay()
         {
             TimeSpan ts;
-            while (_skeletons.Count > 0)
+            var queue = _skeletons;
+            while (queue.Count > 0 && InstanceCaller.IsAlive)
             {
-                var skelet = _skeletons.Dequeue();
+                var skelet = queue.Dequeue();
                 long test = (skelet.timeStamp - RecordingOffset);
                 long tics = skelet.timeStamp + RecordingOffset - DateTime.Now.ToFileTimeUtc();
                 if (tics > 0)
@@ -118,6 +132,11 @@ namespace KinectWpf
         }
     }
 
-
-
+    public class VirtualKinectException: Exception
+    {
+        public VirtualKinectException(string message): base(message)
+        {
+            //
+        }
+    }
 }
