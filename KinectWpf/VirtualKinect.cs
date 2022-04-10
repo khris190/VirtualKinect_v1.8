@@ -22,13 +22,31 @@ namespace KinectWpf
     public class VirtualKinect
     {
         public event EventHandler<MySkeletonFrameEventArgs> SkeletonFrameReady;
-        private static System.Timers.Timer aTimer;
         private Queue<MySkeleton2> _skeletons;
 
         //variable for offseting recorded times to real time clock;
         private long RecordingOffset;
         private Thread InstanceCaller;
         private string _fileName;
+        private long sleepStart;
+        private bool isPaused = false;
+        //on pause remember timestamp and add it to offset on unpause
+        public bool IsPaused
+        {
+            get { return isPaused; }
+            set
+            {
+                isPaused = value;
+                if (value)
+                {
+                    sleepStart = DateTime.Now.ToFileTimeUtc();
+                }
+                else
+                {
+                    RecordingOffset += DateTime.Now.ToFileTimeUtc() - sleepStart;
+                }
+            }
+        }
 
         public VirtualKinect(string fileName)
         {
@@ -67,19 +85,28 @@ namespace KinectWpf
 
         private void DoTheReplay()
         {
-            TimeSpan ts;
+
+            TimeSpan sleepTimer, ts;
             var queue = _skeletons;
             while (queue.Count > 0 && InstanceCaller.IsAlive)
             {
-                var skelet = queue.Dequeue();
-                long test = (skelet.timeStamp - RecordingOffset);
-                long tics = skelet.timeStamp + RecordingOffset - DateTime.Now.ToFileTimeUtc();
-                if (tics > 0)
+                if (isPaused)
                 {
-                    ts = TimeSpan.FromTicks(tics);
-                    Thread.Sleep(ts);
+                    Thread.Sleep(16);
                 }
-                OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(skelet)));
+                else if (!isPaused)
+                {
+                    var skelet = queue.Dequeue();
+                    long test = (skelet.timeStamp - RecordingOffset);
+                    long tics = skelet.timeStamp + RecordingOffset - DateTime.Now.ToFileTimeUtc();
+                    if (tics > 0)
+                    {
+                        ts = TimeSpan.FromTicks(tics);
+                        Thread.Sleep(ts);
+                    }
+                    OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(skelet)));
+
+                }
             }
         }
         private void DoTheReplayPipe()

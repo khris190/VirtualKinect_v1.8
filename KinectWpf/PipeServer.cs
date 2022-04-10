@@ -14,70 +14,93 @@ namespace KinectWpf
 
         public static void send(MySkeleton2 skel)
         {
+            VirtualKinectPipeServer.Start();
+            if (ss.IsConnected)
+            {
+                if (bf == null)
+                {
+                    bf = new BinaryFormatter();
+                }
+                bf.Serialize(ss, skel);
+                ss.Flush();
+            }
+        }
+        public static void Start()
+        {
             if (ss == null)
             {
                 ss = new NamedPipeServerStream("VirtualKinectPipe", PipeDirection.Out);
-
+                ss.WaitForConnectionAsync();
             }
-            if (!ss.IsConnected)
-            {
-                ss.WaitForConnection();
-            }
-            if (bf == null)
-            {
-                bf = new BinaryFormatter();
-            }
-            bf.Serialize(ss, skel);
-            ss.Flush();
         }
     }
 
     public class VirtualKinectPipeClient
-    {
+    { 
+        public event EventHandler<MySkeletonFrameEventArgs> SkeletonFrameReady;
         static BinaryFormatter bf;
-
-        public static void startAsync()
+        Thread InstanceCaller;
+        public void Start()
         {
-            Thread InstanceCaller = new Thread(
-            new ThreadStart(wait));
+            InstanceCaller = new Thread(
+            new ThreadStart(getWithResets));
             InstanceCaller.Start();
         }
-        public static void start()
+        public void Stop()
         {
-            wait();
+            if (InstanceCaller != null)
+            {
+                InstanceCaller.Abort();
+            }
+        }
+        protected virtual void OnSkeletonFrameReady(MySkeletonFrameEventArgs e)
+        {
+            EventHandler<MySkeletonFrameEventArgs> handler = SkeletonFrameReady;
+            handler?.Invoke(this, e);
         }
 
-        public static void wait()
+        public void getWithResets()
         {
-            NamedPipeClientStream cs = new NamedPipeClientStream(".", "VirtualKinectPipe", PipeDirection.In);
-            if (cs.IsConnected != true)
+            while (true)
             {
-                cs.Connect();
+                get();
             }
-            if (bf == null)
-            {
-                bf = new BinaryFormatter();
-            }
-            var test = (MySkeleton2)bf.Deserialize(cs);
-            //return test;
         }
-        public static MySkeleton2 get()
+        public MySkeleton2 get()
         {
-            NamedPipeClientStream cs = new NamedPipeClientStream(".", "VirtualKinectPipe", PipeDirection.In);
-            if (cs.IsConnected != true)
+            try
             {
-                cs.Connect();
+                NamedPipeClientStream cs = new NamedPipeClientStream(".", "VirtualKinectPipe", PipeDirection.In);
+                if (cs.IsConnected != true)
+                {
+                    cs.Connect();
+                }
+                if (bf == null)
+                {
+                    bf = new BinaryFormatter();
+                }
+                MySkeleton2 temp;
+                while ((temp = (MySkeleton2)bf.Deserialize(cs)) != null)
+                {
+                    //Console.WriteLine("Received from server: {0}, {1}", temp,  temp.timeStamp);
+                    Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
+                    OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(temp)));
+                }
+                return temp;
             }
-            if (bf == null)
+            catch (Exception e)
             {
-                bf = new BinaryFormatter();
+                if (e is System.Runtime.Serialization.SerializationException)
+                {
+                    Console.WriteLine("stream has ended");
+                    Console.WriteLine(e.Message);
+                }
+                else
+                {
+                    throw;
+                }
             }
-            MySkeleton2 temp;
-            while ((temp = (MySkeleton2)bf.Deserialize(cs)) != null)
-            {
-                Console.WriteLine("Received from server: {0}, {1}", temp,  temp.timeStamp);
-            }
-            return temp;
+            return null;
         }
     }
 

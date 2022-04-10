@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+//TODO play into record not working
 namespace KinectWpf
 {
     /// <summary>
@@ -25,6 +25,7 @@ namespace KinectWpf
 
         private string _loadedFilePath;
         private VirtualKinect _vk;
+        private KinectSensor kinect;
 
         public MainWindow()
         {
@@ -34,25 +35,28 @@ namespace KinectWpf
 
         ~MainWindow()
         {
-            KinectSerializer.CompressData();
         }
 
+        private bool isRecording = false;
         private void Record()
         {
-            KinectSerializer.InitWrite(true);
-            for (int i = 0; i < 2; i++)
+            if (!isRecording)
             {
-                KinectSerializer.TestSerialize(i);
+                if (_vk != null)
+                {
+                    _vk.Stop();
+                }
+                isRecording = true;
+                KinectSerializer.InitWrite(true);
+                KinectStart();
             }
-            KinectStart();
         }
 
         private void Play()
         {
-            KinectSerializer.InitRead();
-            for (int i = 0; i < 3; i++)
+            if (isRecording)
             {
-                KinectSerializer.DeserializeFrame();
+                StopRecording();
             }
             VirtualKinectStart();
         }
@@ -76,7 +80,7 @@ namespace KinectWpf
         }
         private void KinectStart()
         {
-            var kinect = KinectSensor.KinectSensors.FirstOrDefault(s => s.Status == KinectStatus.Connected);
+            kinect = KinectSensor.KinectSensors.FirstOrDefault(s => s.Status == KinectStatus.Connected);
             if (null != kinect)
             {
                 kinect.SkeletonStream.Enable();
@@ -131,7 +135,6 @@ namespace KinectWpf
                     }
                 }
         }
-        //TODO background task <- check it
 
         static void MySkeletonFrameReady(object sender, MySkeletonFrameEventArgs args)
         {
@@ -142,7 +145,16 @@ namespace KinectWpf
             }
             catch (Exception e)
             {
-                throw new VirtualKinectException(e.Message);
+                //an Exception during thread abortion
+                if (e is System.Threading.ThreadAbortException)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new VirtualKinectException(e.Message);
+
+                }
             }
         }
 
@@ -205,6 +217,54 @@ namespace KinectWpf
         {
             HideErrorMessageBlock();
             HideInfoMessageBlock();
+        }
+        //TODO: disable on recording
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            _vk.IsPaused = !_vk.IsPaused;
+        }
+
+        private void StopRecording()
+        {
+            if (null != kinect)
+            {
+                kinect.Stop();
+            }
+            KinectSerializer.CloseStream();
+            isRecording = false;
+
+        }
+
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (isRecording)
+            {
+                StopRecording();
+            }
+            else
+            {
+                if (_vk != null)
+                {
+                    _vk.Stop();
+
+                }
+            }
+        }
+
+        private void SaveAsButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog
+            Microsoft.Win32.SaveFileDialog saveFileDlg = new Microsoft.Win32.SaveFileDialog();
+            saveFileDlg.DefaultExt = ".dat";
+            Nullable<bool> result = saveFileDlg.ShowDialog();
+            if (result == true)
+            {
+                if (System.IO.File.Exists(saveFileDlg.FileName))
+                {
+                    System.IO.File.Delete(saveFileDlg.FileName);
+                }
+                System.IO.File.Copy(Config.FileName, saveFileDlg.FileName);
+            }
         }
     }
 }

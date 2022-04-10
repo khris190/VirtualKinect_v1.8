@@ -32,12 +32,6 @@ namespace KinectWpf
             bf = new BinaryFormatter();
         }
 
-        public static void InitRead()
-        {
-            s = File.OpenRead(Config.FileName);
-            bf = new BinaryFormatter();
-        }
-
         public static void SerializeFrame(Skeleton steleton)
         {
             if (bf != null)
@@ -69,25 +63,17 @@ namespace KinectWpf
             }
         }
 
-        public static void CompressData()
+        public static void CloseStream()
         {
             if (s != null)
             {
                 s.Close();
-                if (!File.Exists(Config.ZipName))
-                {
-                    ZipFile.CreateFromDirectory(Config.FilesPath, Config.ZipName);
-                }
             }
-            
         }
 
         ~KinectSerializer()
         {
-            if (s != null)
-            {
-                s.Close();
-            }
+            CloseStream();
         }
     }
 
@@ -124,13 +110,16 @@ namespace KinectWpf
             }
             catch (Exception e)
             {
-                return null;
+                if (e is System.Runtime.Serialization.SerializationException)
+                {
+                    return null;
+                }
+                else
+                {
+                    throw e;
+                }
             }
             return result;
-        }
-        public static void DecompressData(string ZipName = Config.ZipName, string FileName = Config.FilesPath)
-        {
-            ZipFile.ExtractToDirectory(ZipName, FileName);
         }
 
         ~KinectDeserializer()

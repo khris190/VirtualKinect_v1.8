@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using KinectWpf;
 
 namespace PipeClientTestProject
@@ -11,13 +11,41 @@ namespace PipeClientTestProject
     {
         public static int Main()
         {
-            while (true)
-            {
-
-                Console.WriteLine( VirtualKinectPipeClient.get().timeStamp);
-
-            }
+            Console.WriteLine("MAIN: " + Thread.CurrentThread.ManagedThreadId);
+            VirtualKinectStart();
             return 0;
+        }
+
+        private static VirtualKinectPipeClient _vkpipe;
+        private static void VirtualKinectStart()
+        {
+            if (_vkpipe != null)
+            {
+                _vkpipe.Stop();
+            }
+
+            try
+            {
+                _vkpipe = new VirtualKinectPipeClient();
+                _vkpipe.SkeletonFrameReady += new EventHandler<MySkeletonFrameEventArgs>(MySkeletonFrameReady);
+                _vkpipe.Start();
+            }
+            catch (VirtualKinectException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        static void MySkeletonFrameReady(object sender, MySkeletonFrameEventArgs args)
+        {
+            try
+            {
+                Console.WriteLine(args.user.timeStamp);
+                Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
+            }
+            catch (Exception e)
+            {
+                throw new VirtualKinectException(e.Message);
+            }
         }
     }
 }
