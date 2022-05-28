@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO.Compression;
 
-namespace KinectWpf
+namespace VirtualKinect
 {
     public delegate void MySkeletonFrameReadyEventHandler(object sender, MySkeletonFrameEventArgs e);
 
@@ -23,6 +23,24 @@ namespace KinectWpf
     {
         public event EventHandler<MySkeletonFrameEventArgs> SkeletonFrameReady;
         private Queue<MySkeleton2> _skeletons;
+
+        private SortedList<long, MySkeleton2> _skeletonsDictionary;
+        public static readonly object skeletonPointerLock = new object();
+        public long skeletonsPointer;
+        public volatile int skeletonsPointerIndex = 0;
+        public volatile bool sliderManipulated = false;
+        public long[] GetSkeletonsTimings()
+        {
+            long[] ret = new long[_skeletonsDictionary.Count];
+            int i = 0;
+            foreach(var s in _skeletonsDictionary)
+            {
+                ret[i] += (s.Key);
+                i++;
+            }
+            return ret;
+        }
+
 
         //variable for offseting recorded times to real time clock;
         private long RecordingOffset;
@@ -51,21 +69,29 @@ namespace KinectWpf
         public VirtualKinect(string fileName)
         {
             _fileName = fileName;
+            if (_fileName == null)
+            {
+                throw new Exception("Please, select a file first.");
+            }
+            KinectDeserializer.InitRead(_fileName);
+            _skeletons = KinectDeserializer.DeserializeAll();
+            _skeletonsDictionary = new SortedList<long, MySkeleton2>();
+
+            DeleteFirstTwo();
+            CalcualteOffset();
+            foreach (MySkeleton2 skeleton2 in _skeletons)
+            {
+                _skeletonsDictionary.Add(skeleton2.timeStamp, skeleton2);
+            }
         }
 
-        public void Start()
+        public void Start(int index = 0)
         {
             var skeleton = new MySkeleton2();
+            this.skeletonsPointerIndex = index;
             try
             {
-                if (_fileName == null)
-                {
-                    throw new Exception("Please, select a file first.");
-                }
-                KinectDeserializer.InitRead(_fileName);
-                _skeletons = KinectDeserializer.DeserializeAll();
-                DeleteFirstTwo();
-                CalcualteOffset();
+
                 InstanceCaller = new Thread(new ThreadStart(DoTheReplay));
                 InstanceCaller.Start();
             }
@@ -86,25 +112,37 @@ namespace KinectWpf
         private void DoTheReplay()
         {
 
-            TimeSpan sleepTimer, ts;
+            TimeSpan ts;
             var queue = _skeletons;
             while (queue.Count > 0 && InstanceCaller.IsAlive)
-            {
-                if (isPaused)
+            { 
+                MySkeleton2 skelet;
+                if (skeletonsPointerIndex < _skeletonsDictionary.Count)
                 {
-                    Thread.Sleep(16);
-                }
-                else if (!isPaused)
-                {
-                    var skelet = queue.Dequeue();
-                    long test = (skelet.timeStamp - RecordingOffset);
-                    long tics = skelet.timeStamp + RecordingOffset - DateTime.Now.ToFileTimeUtc();
-                    if (tics > 0)
+                    if (!isPaused && !sliderManipulated)
                     {
-                        ts = TimeSpan.FromTicks(tics);
-                        Thread.Sleep(ts);
+                        skelet = _skeletonsDictionary.Values[skeletonsPointerIndex];
+
+                        if (skeletonsPointerIndex == 0)
+                        {
+                            Thread.Sleep(16);
+                        }
+                        else
+                        {
+                            long tics = skelet.timeStamp - _skeletonsDictionary.Values[skeletonsPointerIndex - 1].timeStamp;
+                            if (tics > 0)
+                            {
+                                ts = TimeSpan.FromTicks(tics);
+                                Thread.Sleep(ts);
+                            }
+                        }
+                        skeletonsPointerIndex++;
+                        OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(skelet)));
                     }
-                    OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(skelet)));
+                    else
+                    {
+                        Thread.Sleep(32);
+                    }
 
                 }
             }

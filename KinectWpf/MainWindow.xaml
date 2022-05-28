@@ -6,12 +6,16 @@
         xmlns:local="clr-namespace:KinectWpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        ResizeMode="NoResize"
+        ResizeMode="NoResize" Closed="Window_Closed"
 >
     <Grid>
-        <Canvas x:Name="MainCanvas" Width="400" Margin="0,1,400,0" Background="#FFC6C6C6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="197*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas x:Name="MainCanvas" Width="400" Margin="0,0,388,1" Background="#FFC6C6C6">
 
-            <Ellipse x:Name="Point000" Height="10" Canvas.Left="780" Stroke="Black" Canvas.Top="414" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Ellipse x:Name="Point000" Height="10" Canvas.Left="914" Stroke="Black" Canvas.Top="622" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -22,7 +26,7 @@
                 </Ellipse.RenderTransform>
             </Ellipse>
 
-            <Ellipse x:Name="Point001" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red">
+            <Ellipse x:Name="Point001" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -32,7 +36,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point002" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point002" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -42,7 +46,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point003" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point003" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -52,7 +56,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point004" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point004" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -62,7 +66,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point005" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point005" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -72,7 +76,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point006" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point006" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -82,7 +86,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point007" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point007" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -92,7 +96,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point008" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point008" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -102,7 +106,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point009" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point009" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -112,7 +116,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point010" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point010" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -122,7 +126,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point011" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point011" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -132,7 +136,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point012" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point012" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -142,7 +146,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point013" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point013" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -152,7 +156,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point014" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point014" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -162,7 +166,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point015" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point015" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -172,7 +176,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point016" Height="10" Canvas.Left="0" Stroke="Black" Canvas.Top="0" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point016" Height="10" Canvas.Left="134" Stroke="Black" Canvas.Top="208" Width="10" RenderTransformOrigin="0.5,0.5" Fill="Red" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -182,7 +186,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point017" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10">
+            <Ellipse x:Name="Point017" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10" Canvas.Left="134" Canvas.Top="208">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -192,7 +196,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point018" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point018" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="134" Canvas.Top="208">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -202,7 +206,7 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
-            <Ellipse x:Name="Point019" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Ellipse x:Name="Point019" Stroke="Black" RenderTransformOrigin="0.5,0.5" Fill="Red" Height="10" Width="10" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="134" Canvas.Top="208">
                 <Ellipse.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1"/>
@@ -214,17 +218,43 @@
             </Ellipse>
         </Canvas>
         <Canvas x:Name="ControlCanvas" Background="#FFF6F6F6" Margin="400,0,0,0" HorizontalAlignment="Left">
-            <Grid x:Name="ControlGrid" Height="434" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top" Panel.ZIndex="10">
-                <Label x:Name="MainLabel" Content="Kinect Recorder" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="24" FontWeight="Bold"/>
-                <Button x:Name="RecordButton" Content="Record" Margin="40,68,300,346" Width="60" Click="RecordButton_Click"/>
-                <Button x:Name="PlayButton" Content="Play" Margin="120,68,220,346" Width="60" Click="PlayButton_Click"/>
-                <Button x:Name="SaveAsButton" Content="Save as" Margin="300,68,40,346" Width="60" Click="SaveAsButton_Click"/>
-                <Button x:Name="LoadButton" Content="Load" Margin="210,68,110,346" Width="60" Click="LoadButton_Click"/>
-                <TextBlock x:Name="ErrorBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FFC50404" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,383,0,20"/>
-                <TextBlock x:Name="InfoBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FF08529D" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21"/>
-                <Button x:Name="PauseButton" Content="Pause" Margin="40,112,300,302" Width="60" Click="PauseButton_Click"/>
-                <Button x:Name="StopButon" Content="Stop" Margin="120,112,220,302" Width="60" Click="StopButton_Click"/>
-            </Grid>
+            <TabControl Height="434" Width="399" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <TabItem x:Name="RecorderTab" Header="Recorder" ContextMenuClosing="RecorderTab_ContextMenuClosing">
+                    <Grid Background="#FFE5E5E5" Height="407" HorizontalAlignment="Left" Width="400">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="83*"/>
+                            <ColumnDefinition Width="317*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="RecordControlGrid" Height="434" Width="400" HorizontalAlignment="Left" VerticalAlignment="Bottom" Panel.ZIndex="10" Grid.ColumnSpan="2">
+                            <Label x:Name="MainLabel" Content="Kinect Recorder" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,46,0,0" FontSize="24" FontWeight="Bold"/>
+                            <Button x:Name="RecordButton" Content="Record" Margin="37,118,303,296" Width="60" Click="RecordButton_Click"/>
+                            <Button x:Name="SaveAsButton" Content="Save as" Margin="297,118,43,296" Width="60" Click="SaveAsButton_Click"/>
+                            <TextBlock x:Name="ErrorBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FFC50404" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,383,0,20"/>
+                            <TextBlock x:Name="InfoBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FF08529D" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21"/>
+                            <Button x:Name="PauseButton" Content="Pause" Margin="37,162,303,252" Width="60" Click="PauseButton_Click"/>
+                            <Button x:Name="StopButon" Content="Stop" Margin="117,162,223,252" Width="60" Click="StopButton_Click"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="PlayerTab" Header="Player" ContextMenuClosing="PlayerTab_ContextMenuClosing">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid x:Name="PlayControlGrid" Height="434" Width="400" HorizontalAlignment="Left" VerticalAlignment="Bottom" Panel.ZIndex="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="29*"/>
+                                <ColumnDefinition Width="371*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="PlayerLabel" Content="Kinect Player" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="92,43,0,0" FontSize="24" FontWeight="Bold" Grid.Column="1"/>
+                            <Button x:Name="PlayButton1" Content="Play" Margin="11,105,300,309" Width="60" Click="PlayButton_Click" Grid.Column="1"/>
+                            <Button x:Name="LoadButton1" Content="Load" Margin="261,105,50,309" Width="60" Click="LoadButton_Click" Grid.Column="1"/>
+                            <TextBlock x:Name="ErrorBlock1" Visibility="Collapsed" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" Background="#FFC50404" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21" Grid.ColumnSpan="2"/>
+                            <TextBlock x:Name="InfoBlock1" Visibility="Collapsed" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" Background="#FF08529D" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21" Grid.ColumnSpan="2"/>
+                            <Button x:Name="PauseButton1" Content="Pause" Margin="11,148,300,266" Width="60" Click="PauseButton_Click" Grid.Column="1"/>
+                            <Button x:Name="StopButon1" Content="Stop" Margin="76,148,235,266" Width="60" Click="StopButton_Click" Grid.Column="1"/>
+                            <Slider x:Name="PlayerSlider" HorizontalAlignment="Left" Margin="5,199,0,0" VerticalAlignment="Top" Width="332" Grid.Column="1" TickPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="PlayerSlider_ValueChanged" LostMouseCapture="PlayerSlider_LostMouseCapture" GotMouseCapture="PlayerSlider_GotMouseCapture"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
         </Canvas>
     </Grid>
 </Window>

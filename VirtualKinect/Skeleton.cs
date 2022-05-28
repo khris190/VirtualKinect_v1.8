@@ -7,7 +7,7 @@ using System.Threading;
 
 using System.IO.Compression;
 
-namespace KinectWpf
+namespace VirtualKinect
 {
     public class KinectSerializer
     {

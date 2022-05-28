@@ -2,10 +2,15 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net471</TargetFramework>
+        <TargetFramework>net472</TargetFramework>
         <Nullable>disable</Nullable>
         <UseWPF>true</UseWPF>
+        <Platforms>AnyCPU;x64</Platforms>
     </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\VirtualKinect\VirtualKinect.csproj" />
+    </ItemGroup>
 
     <ItemGroup>
       <Reference Include="Microsoft.Kinect">

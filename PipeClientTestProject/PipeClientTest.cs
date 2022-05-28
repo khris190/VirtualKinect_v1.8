@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using KinectWpf;
 
@@ -19,13 +16,12 @@ namespace PipeClientTestProject
         private static VirtualKinectPipeClient _vkpipe;
         private static void VirtualKinectStart()
         {
-            if (_vkpipe != null)
-            {
-                _vkpipe.Stop();
-            }
-
             try
             {
+                if (_vkpipe != null)
+                {
+                    _vkpipe.Stop();
+                }
                 _vkpipe = new VirtualKinectPipeClient();
                 _vkpipe.SkeletonFrameReady += new EventHandler<MySkeletonFrameEventArgs>(MySkeletonFrameReady);
                 _vkpipe.Start();

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KinectWpf
+namespace VirtualKinect
 {
-    internal class Config
+    public class Config
     {
         public const string FileName = "./tempKinectData.dat";
         public const string ZipName = "temp2.zip";

@@ -2,17 +2,11 @@
 using Microsoft.Kinect;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using VirtualKinect;
 //TODO play into record not working
 namespace KinectWpf
 {
@@ -24,7 +18,7 @@ namespace KinectWpf
         public bool recordActive = false;
 
         private string _loadedFilePath;
-        private VirtualKinect _vk;
+        private VirtualKinect.VirtualKinect _vk;
         private KinectSensor kinect;
 
         public MainWindow()
@@ -61,8 +55,34 @@ namespace KinectWpf
             VirtualKinectStart();
         }
 
+        static Slider slider;
+        static SortedList<double, long> sliderMap;
+        static bool sliderInitialized = false;
+
+        private void InitializeSlider()
+        {
+            sliderInitialized = false;
+
+            slider = this.FindName("PlayerSlider") as Slider;
+            long[] skeletonTimings = _vk.GetSkeletonsTimings();
+            sliderMap = new SortedList<double, long>();
+            foreach (var item in skeletonTimings)
+            {
+                if (!sliderMap.ContainsKey(item))
+                {
+                    sliderMap.Add((double)(item / 10000) / 1000, item);
+                }
+            }
+
+            slider.Ticks = new DoubleCollection(sliderMap.Keys);
+            slider.Minimum = sliderMap.Keys.First();
+            slider.Maximum = sliderMap.Keys.Last();
+            sliderInitialized = true;
+        }
+
         static List<System.Windows.Shapes.Ellipse> ellipses;
         Canvas canvas;
+
         private void SetPoints()
         {
             ellipses = new List<System.Windows.Shapes.Ellipse>();
@@ -70,7 +90,7 @@ namespace KinectWpf
             for (int i = 0; i < 20; i++)
             {
                 object test = this.FindName("Point0" + (i < 10 ? "0" : "") + i.ToString());
-                
+
                 if (test is System.Windows.Shapes.Ellipse)
                 {
                     ellipses.Add(test as System.Windows.Shapes.Ellipse);
@@ -88,7 +108,7 @@ namespace KinectWpf
                 kinect.Start();
             }
         }
-        
+
         private void VirtualKinectStart()
         {
             if (_vk != null)
@@ -98,7 +118,8 @@ namespace KinectWpf
 
             try
             {
-                _vk = new VirtualKinect(_loadedFilePath);
+                _vk = new VirtualKinect.VirtualKinect(_loadedFilePath);
+                InitializeSlider();
                 _vk.SkeletonFrameReady += new EventHandler<MySkeletonFrameEventArgs>(MySkeletonFrameReady);
                 _vk.Start();
             }
@@ -136,11 +157,14 @@ namespace KinectWpf
                 }
         }
 
-        static void MySkeletonFrameReady(object sender, MySkeletonFrameEventArgs args)
+        static void MySkeletonFrameReady(object sender, VirtualKinect.MySkeletonFrameEventArgs args)
         {
             try
             {
-                System.Windows.Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
+                if (Application.Current != null)
+                {
+                    Application.Current.Dispatcher.Invoke(() => { SkeletonDrawer(args.user); });
+                }
                 VirtualKinectPipeServer.send(args.user);
             }
             catch (Exception e)
@@ -150,20 +174,31 @@ namespace KinectWpf
                 {
                     return;
                 }
+                else if (e is System.NullReferenceException)
+                {
+                    return;
+                }
                 else
                 {
                     throw new VirtualKinectException(e.Message);
-
                 }
             }
         }
 
         public static void SkeletonDrawer(MySkeleton2 user)
         {
+            try
+            {
+
+                slider.Value = (double)(user.timeStamp / 10000) / 1000;
+            }
+            catch (Exception)
+            {
+            }
             for (int i = 0; i < 20; i++)
             {
-                Canvas.SetLeft(ellipses[i], (user.Joints[i].Position.X + 1) * 200);
-                Canvas.SetTop(ellipses[i], 400 - (user.Joints[i].Position.Y + 1) * 200);
+                Canvas.SetLeft(ellipses[i], (user.Joints[i].Position.X + 1) * 160);
+                Canvas.SetTop(ellipses[i], 400 - (user.Joints[i].Position.Y + 1) * 160);
             }
         }
 
@@ -194,6 +229,8 @@ namespace KinectWpf
             HideMessageBlocks();
             ErrorBlock.Text = message;
             ErrorBlock.Visibility = Visibility.Visible;
+            ErrorBlock1.Text = message;
+            ErrorBlock1.Visibility = Visibility.Visible;
         }
 
         private void HideErrorMessageBlock()
@@ -264,6 +301,76 @@ namespace KinectWpf
                     System.IO.File.Delete(saveFileDlg.FileName);
                 }
                 System.IO.File.Copy(Config.FileName, saveFileDlg.FileName);
+            }
+        }
+
+        private void RecorderTab_ContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
+            if (isRecording)
+            {
+                StopRecording();
+            }
+            else
+            {
+                if (_vk != null)
+                {
+                    _vk.Stop();
+
+                }
+            }
+        }
+
+        private void PlayerTab_ContextMenuClosing(object sender, ContextMenuEventArgs e)
+        {
+            if (isRecording)
+            {
+                StopRecording();
+            }
+            else
+            {
+                if (_vk != null)
+                {
+                    _vk.Stop();
+
+                }
+            }
+        }
+
+        private void PlayerSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (sliderInitialized)
+            {
+                Slider tmpsender = sender as Slider;
+                //IsFocused, IsMouseDirectlyOver, IsMouseOver, IsKeyboardFocused, IsKeyboardFocusWithin
+                    _vk.skeletonsPointerIndex = sliderMap.IndexOfKey(tmpsender.Value);
+            }
+        }
+
+        private void PlayerSlider_LostMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (_vk != null)
+            {
+                _vk.sliderManipulated = false;
+            }
+        }
+
+        private void PlayerSlider_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            if (_vk != null)
+            {
+                _vk.sliderManipulated = true;
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            if (isRecording)
+            {
+                StopRecording();
+            }
+            if (_vk != null)
+            {
+                _vk.Stop();
             }
         }
     }

@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 
-namespace KinectWpf
+namespace VirtualKinect
 {
-    class VirtualKinectPipeServer
+    public class VirtualKinectPipeServer
     {
         static BinaryFormatter bf;
         static NamedPipeServerStream ss;
