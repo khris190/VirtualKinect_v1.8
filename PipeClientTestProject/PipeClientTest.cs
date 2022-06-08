@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using KinectWpf;
+using VirtualKinect;
 
 namespace PipeClientTestProject
 {
@@ -13,7 +13,12 @@ namespace PipeClientTestProject
             return 0;
         }
 
+        /// <summary>
+        /// client of virtual kinect pipe
+        /// </summary>
         private static VirtualKinectPipeClient _vkpipe;
+
+
         private static void VirtualKinectStart()
         {
             try

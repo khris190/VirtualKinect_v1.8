@@ -40,9 +40,9 @@
     <Compile Include="PipeClientTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KinectWpf\KinectWpf.csproj">
-      <Project>{b1d9622d-affe-4027-bdf1-376370ea5f1f}</Project>
-      <Name>KinectWpf</Name>
+    <ProjectReference Include="..\VirtualKinect\VirtualKinect.csproj">
+      <Project>{10f223ba-51ea-4fad-8da7-c6dd561865ca}</Project>
+      <Name>VirtualKinect</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

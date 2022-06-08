@@ -14,7 +14,7 @@ namespace VirtualKinect
         static Stream s;
         static BinaryFormatter bf;
 
-        public static void InitWrite(bool doDelete = false)
+        public static void InitWrite(bool doDelete = true)
         {
             if (doDelete)
             {
@@ -22,13 +22,9 @@ namespace VirtualKinect
                 {
                     File.Delete(Config.FileName);
                 }
-                if (File.Exists(Config.ZipName))
-                {
-                    File.Delete(Config.ZipName);
-                }
             }
 
-            s = File.OpenWrite(Config.FileName);
+            s = new FileStream(Config.FileName, FileMode.OpenOrCreate, FileAccess.Write);
             bf = new BinaryFormatter();
         }
 
@@ -36,7 +32,10 @@ namespace VirtualKinect
         {
             if (bf != null)
             {
-                bf.Serialize(s, (MySkeleton2)steleton);
+                if (s.CanWrite)
+                {
+                    bf.Serialize(s, (MySkeleton2)steleton);
+                }
             }
         }
 
@@ -92,12 +91,12 @@ namespace VirtualKinect
         {
             Queue<MySkeleton2> result = new Queue<MySkeleton2>();
             MySkeleton2 tempSkel;
-            tempSkel = DeserializeNextFrame();
             do
             {
-                result.Enqueue(tempSkel);
                 tempSkel = DeserializeNextFrame();
+                result.Enqueue(tempSkel);
             } while (tempSkel != null);
+
             return result;
         }
 
@@ -119,6 +118,7 @@ namespace VirtualKinect
                     throw e;
                 }
             }
+
             return result;
         }
 

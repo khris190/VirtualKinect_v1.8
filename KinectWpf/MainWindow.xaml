@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KinectWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        ResizeMode="NoResize" Closed="Window_Closed"
+        Title="MainWindow" Width="800"
+        ResizeMode="NoResize" Closed="Window_Closed" Height="449"
 >
     <Grid>
         <Grid.ColumnDefinitions>
@@ -216,11 +216,12 @@
                     </TransformGroup>
                 </Ellipse.RenderTransform>
             </Ellipse>
+            <Border x:Name="RecordingBorder" BorderBrush="Red" BorderThickness="5,5,5,5" Height="410" Width="400" HorizontalAlignment="Center" VerticalAlignment="Top"/>
         </Canvas>
         <Canvas x:Name="ControlCanvas" Background="#FFF6F6F6" Margin="400,0,0,0" HorizontalAlignment="Left">
-            <TabControl Height="434" Width="399" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <TabControl Width="399" HorizontalAlignment="Center" VerticalAlignment="Top" Height="434">
                 <TabItem x:Name="RecorderTab" Header="Recorder" ContextMenuClosing="RecorderTab_ContextMenuClosing">
-                    <Grid Background="#FFE5E5E5" Height="407" HorizontalAlignment="Left" Width="400">
+                    <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" Width="400">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="83*"/>
                             <ColumnDefinition Width="317*"/>
@@ -230,9 +231,7 @@
                             <Button x:Name="RecordButton" Content="Record" Margin="37,118,303,296" Width="60" Click="RecordButton_Click"/>
                             <Button x:Name="SaveAsButton" Content="Save as" Margin="297,118,43,296" Width="60" Click="SaveAsButton_Click"/>
                             <TextBlock x:Name="ErrorBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FFC50404" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,383,0,20"/>
-                            <TextBlock x:Name="InfoBlock" Visibility="Collapsed" HorizontalAlignment="Center" TextWrapping="Wrap" Text="TextBlock" Background="#FF08529D" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21"/>
-                            <Button x:Name="PauseButton" Content="Pause" Margin="37,162,303,252" Width="60" Click="PauseButton_Click"/>
-                            <Button x:Name="StopButon" Content="Stop" Margin="117,162,223,252" Width="60" Click="StopButton_Click"/>
+                            <Button x:Name="StopButon" Content="Stop" Margin="37,166,303,248" Width="60" Click="StopButton_Click"/>
                         </Grid>
                     </Grid>
                 </TabItem>
@@ -246,11 +245,11 @@
                             <Label x:Name="PlayerLabel" Content="Kinect Player" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="92,43,0,0" FontSize="24" FontWeight="Bold" Grid.Column="1"/>
                             <Button x:Name="PlayButton1" Content="Play" Margin="11,105,300,309" Width="60" Click="PlayButton_Click" Grid.Column="1"/>
                             <Button x:Name="LoadButton1" Content="Load" Margin="261,105,50,309" Width="60" Click="LoadButton_Click" Grid.Column="1"/>
-                            <TextBlock x:Name="ErrorBlock1" Visibility="Collapsed" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" Background="#FFC50404" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21" Grid.ColumnSpan="2"/>
-                            <TextBlock x:Name="InfoBlock1" Visibility="Collapsed" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" Background="#FF08529D" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,384,0,21" Grid.ColumnSpan="2"/>
                             <Button x:Name="PauseButton1" Content="Pause" Margin="11,148,300,266" Width="60" Click="PauseButton_Click" Grid.Column="1"/>
                             <Button x:Name="StopButon1" Content="Stop" Margin="76,148,235,266" Width="60" Click="StopButton_Click" Grid.Column="1"/>
+                            <TextBlock x:Name="InfoBlock" Visibility="Collapsed" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" Background="#FF08529D" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Grid.ColumnSpan="2" Margin="0,387,0,18"/>
                             <Slider x:Name="PlayerSlider" HorizontalAlignment="Left" Margin="5,199,0,0" VerticalAlignment="Top" Width="332" Grid.Column="1" TickPlacement="TopLeft" IsSnapToTickEnabled="True" ValueChanged="PlayerSlider_ValueChanged" LostMouseCapture="PlayerSlider_LostMouseCapture" GotMouseCapture="PlayerSlider_GotMouseCapture"/>
+                            <TextBlock x:Name="ErrorBlock_Player" Visibility="Collapsed" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" Background="#FFC50404" Height="29" Width="400" Foreground="White" Padding="10,5,10,5" Margin="0,387,0,18" Grid.ColumnSpan="2"/>
                         </Grid>
                     </Grid>
                 </TabItem>

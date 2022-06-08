@@ -7,11 +7,16 @@ using System.Threading;
 
 namespace VirtualKinect
 {
+
     public class VirtualKinectPipeServer
     {
         static BinaryFormatter bf;
         static NamedPipeServerStream ss;
 
+        /// <summary>
+        /// sends singular MySkeleton2 object through a PipeStream
+        /// </summary>
+        /// <param name="skel"></param>
         public static void send(MySkeleton2 skel)
         {
             VirtualKinectPipeServer.Start();
@@ -25,6 +30,10 @@ namespace VirtualKinect
                 ss.Flush();
             }
         }
+       
+        /// <summary>
+        /// create pipe output server and wait for a connection asynchronusly
+        /// </summary>
         public static void Start()
         {
             if (ss == null)
@@ -40,12 +49,20 @@ namespace VirtualKinect
         public event EventHandler<MySkeletonFrameEventArgs> SkeletonFrameReady;
         static BinaryFormatter bf;
         Thread InstanceCaller;
+
+        /// <summary>
+        /// start a thread listening for VK pipe that will try to reconect after a pipe is terminated
+        /// </summary>
         public void Start()
         {
             InstanceCaller = new Thread(
             new ThreadStart(getWithResets));
             InstanceCaller.Start();
         }
+
+        /// <summary>
+        /// abort client thread
+        /// </summary>
         public void Stop()
         {
             if (InstanceCaller != null)
@@ -53,20 +70,32 @@ namespace VirtualKinect
                 InstanceCaller.Abort();
             }
         }
+
+        /// <summary>
+        /// invoke FrameReady Event
+        /// </summary>
+        /// <param name="e"></param>
         protected virtual void OnSkeletonFrameReady(MySkeletonFrameEventArgs e)
         {
             EventHandler<MySkeletonFrameEventArgs> handler = SkeletonFrameReady;
             handler?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// retry gets on pipe close
+        /// </summary>
         public void getWithResets()
         {
             while (true)
             {
-                get();
+                DeserializeSkeletonsFromPipe();
             }
         }
-        public MySkeleton2 get()
+
+        /// <summary>
+        /// deserializes MySkeleton2 objects from pipe stream and invokes OnSkeletonFrameReady events
+        /// </summary>
+        public MySkeleton2 DeserializeSkeletonsFromPipe()
         {
             try
             {
@@ -82,10 +111,9 @@ namespace VirtualKinect
                 MySkeleton2 temp;
                 while ((temp = (MySkeleton2)bf.Deserialize(cs)) != null)
                 {
-                    //Console.WriteLine("Received from server: {0}, {1}", temp,  temp.timeStamp);
-                    Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
                     OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(temp)));
                 }
+                // this return is not used, it was when this functioon only read 1 object from pipe and returned, but it dodnt work well
                 return temp;
             }
             catch (Exception e)

@@ -1,9 +1,6 @@
 using System;
-using System.Threading;
-using System.Timers;
-using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.IO.Compression;
+using System.Threading;
 
 namespace VirtualKinect
 {
@@ -25,15 +22,17 @@ namespace VirtualKinect
         private Queue<MySkeleton2> _skeletons;
 
         private SortedList<long, MySkeleton2> _skeletonsDictionary;
+        private long? lastFrameTime;
         public static readonly object skeletonPointerLock = new object();
         public long skeletonsPointer;
         public volatile int skeletonsPointerIndex = 0;
         public volatile bool sliderManipulated = false;
+
         public long[] GetSkeletonsTimings()
         {
             long[] ret = new long[_skeletonsDictionary.Count];
             int i = 0;
-            foreach(var s in _skeletonsDictionary)
+            foreach (var s in _skeletonsDictionary)
             {
                 ret[i] += (s.Key);
                 i++;
@@ -71,7 +70,7 @@ namespace VirtualKinect
             _fileName = fileName;
             if (_fileName == null)
             {
-                throw new Exception("Please, select a file first.");
+                throw new VirtualKinectException("Please, select a file first.");
             }
             KinectDeserializer.InitRead(_fileName);
             _skeletons = KinectDeserializer.DeserializeAll();
@@ -81,7 +80,10 @@ namespace VirtualKinect
             CalcualteOffset();
             foreach (MySkeleton2 skeleton2 in _skeletons)
             {
-                _skeletonsDictionary.Add(skeleton2.timeStamp, skeleton2);
+                if (null != skeleton2 && !_skeletonsDictionary.ContainsKey(skeleton2.timeStamp))
+                {
+                    _skeletonsDictionary.Add(skeleton2.timeStamp, skeleton2);
+                }
             }
         }
 
@@ -95,7 +97,7 @@ namespace VirtualKinect
                 InstanceCaller = new Thread(new ThreadStart(DoTheReplay));
                 InstanceCaller.Start();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new VirtualKinectException(e.Message);
             }
@@ -115,9 +117,9 @@ namespace VirtualKinect
             TimeSpan ts;
             var queue = _skeletons;
             while (queue.Count > 0 && InstanceCaller.IsAlive)
-            { 
+            {
                 MySkeleton2 skelet;
-                if (skeletonsPointerIndex < _skeletonsDictionary.Count)
+                if (skeletonsPointerIndex < _skeletonsDictionary.Count && skeletonsPointerIndex >= 0)
                 {
                     if (!isPaused && !sliderManipulated)
                     {
@@ -130,12 +132,19 @@ namespace VirtualKinect
                         else
                         {
                             long tics = skelet.timeStamp - _skeletonsDictionary.Values[skeletonsPointerIndex - 1].timeStamp;
+                            long offset = 0;
+                            if (lastFrameTime != null)
+                            {
+                                offset = lastFrameTime.Value - DateTime.Now.ToFileTimeUtc();
+                            }
+                            tics += offset;
                             if (tics > 0)
                             {
                                 ts = TimeSpan.FromTicks(tics);
                                 Thread.Sleep(ts);
                             }
                         }
+                        lastFrameTime = DateTime.Now.ToFileTimeUtc();
                         skeletonsPointerIndex++;
                         OnSkeletonFrameReady(new MySkeletonFrameEventArgs(new MySkeleton2(skelet)));
                     }
@@ -143,7 +152,6 @@ namespace VirtualKinect
                     {
                         Thread.Sleep(32);
                     }
-
                 }
             }
         }
@@ -181,13 +189,28 @@ namespace VirtualKinect
         }
         private void DeleteFirstTwo()
         {
-            _skeletons.Dequeue();
-            _skeletons.Dequeue();
+            try
+            {
+                _skeletons.Dequeue();
+                _skeletons.Dequeue();
+            }
+            catch (Exception e)
+            {
+                throw new VirtualKinectException("A problem occured while reading the file.");
+            }
+
         }
 
         private void CalcualteOffset()
         {
-            RecordingOffset = DateTime.Now.ToFileTimeUtc() - _skeletons.Peek().timeStamp;
+            try
+            {
+                RecordingOffset = DateTime.Now.ToFileTimeUtc() - _skeletons.Peek().timeStamp;
+            }
+            catch (Exception e)
+            {
+                throw new VirtualKinectException("A problem occured while reading the file.");
+            }
         }
 
         protected virtual void OnSkeletonFrameReady(MySkeletonFrameEventArgs e)
@@ -197,9 +220,9 @@ namespace VirtualKinect
         }
     }
 
-    public class VirtualKinectException: Exception
+    public class VirtualKinectException : Exception
     {
-        public VirtualKinectException(string message): base(message)
+        public VirtualKinectException(string message) : base(message)
         {
             //
         }
