@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using VirtualKinect;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 //TODO play into record not working
 namespace KinectWpf
@@ -17,24 +19,32 @@ namespace KinectWpf
     /// </summary>
     public partial class MainWindow : Window
     {
-        public bool recordActive = false;
+        public bool recordActive;
+        private bool isRecording;
 
         private string _loadedFilePath;
         private VirtualKinect.VirtualKinect _vk;
         private KinectSensor kinect;
 
-        static Border recBorder;
         static Slider slider;
         static SortedList<long, double> sliderMap;
-        static bool sliderInitialized = false;
+        static bool sliderInitialized;
 
 
         static List<System.Windows.Shapes.Ellipse> ellipses;
         Canvas canvas;
 
         public MainWindow()
-        { 
+        {
             InitializeComponent();
+            InitializeVariables();
+        }
+
+        private void InitializeVariables()
+        {
+            recordActive = false;
+            sliderInitialized = false;
+            isRecording = false;
             SetPoints();
         }
 
@@ -42,13 +52,12 @@ namespace KinectWpf
         {
         }
 
-        private bool isRecording = false;
        
         /// <summary>
         /// if recording hasn't been started stop any possible virtual kinect
         /// init write to temp file and start physical kinect
         /// </summary>
-        private void Record()
+        private void StartRecording()
         {
             if (!isRecording)
             {
@@ -78,6 +87,7 @@ namespace KinectWpf
         {
             //this if was put in here just to be sure that recording has been stopped in previous versions
             // now it's here just as a insurance
+            Thread.Sleep(GetDelay() * 1000);
             if (isRecording)
             {
                 StopRecording();
@@ -281,7 +291,7 @@ namespace KinectWpf
         /// <param name="e"></param>
         private void RecordButton_Click(object sender, RoutedEventArgs e)
         {
-            Record();
+            StartRecording();
         }
 
         /// <summary>
@@ -493,6 +503,37 @@ namespace KinectWpf
             KinectSerializer.CloseStream();
             isRecording = false;
 
+        }
+
+        private void DelayTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void DelayTextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (DelayTextBox.Text == "Delay")
+            {
+                DelayTextBox.Text = "";
+            }
+        }
+
+        private void DelayTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (DelayTextBox.Text == "")
+            {
+                DelayTextBox.Text = "Delay";
+            }
+        }
+
+        private int GetDelay()
+        {
+            if (DelayTextBox.Text == "Delay" || DelayTextBox.Text == "")
+            {
+                return 0;
+            }
+            return Int32.Parse(DelayTextBox.Text);
         }
     }
 }

@@ -194,7 +194,7 @@ namespace VirtualKinect
                 _skeletons.Dequeue();
                 _skeletons.Dequeue();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new VirtualKinectException("A problem occured while reading the file.");
             }
@@ -207,7 +207,7 @@ namespace VirtualKinect
             {
                 RecordingOffset = DateTime.Now.ToFileTimeUtc() - _skeletons.Peek().timeStamp;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new VirtualKinectException("A problem occured while reading the file.");
             }

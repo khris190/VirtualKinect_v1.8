@@ -46,7 +46,7 @@ namespace VirtualKinect
             {
                 result = (MySkeleton2)bf.Deserialize(s);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
