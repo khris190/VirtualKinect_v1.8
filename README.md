@@ -5,6 +5,7 @@ make first Kinect great again
 
 
 <h1>VirtualKinect client usage </h1>
+
     try
     {
         _vkpipe = new VirtualKinectPipeClient();
