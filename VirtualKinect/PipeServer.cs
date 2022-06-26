@@ -84,7 +84,7 @@ namespace VirtualKinect
         /// <summary>
         /// retry gets on pipe close
         /// </summary>
-        public void getWithResets()
+        protected void getWithResets()
         {
             while (true)
             {
@@ -95,7 +95,7 @@ namespace VirtualKinect
         /// <summary>
         /// deserializes MySkeleton2 objects from pipe stream and invokes OnSkeletonFrameReady events
         /// </summary>
-        public MySkeleton2 DeserializeSkeletonsFromPipe()
+        protected MySkeleton2 DeserializeSkeletonsFromPipe()
         {
             try
             {
