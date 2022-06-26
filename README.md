@@ -24,10 +24,10 @@ they are pretty self explanatory: <br/>
 Start() <br/>
 Stop() <br/>
 Every event gets MySkeleton2 object as a parameter, its structure is as follows: <br/>
-* public long timeStamp;
-* public const int jointsSize = 20;
-* public MyJoint[jointsSize] Joints;
-  * public short jointType;
-  * public short trackingState;
-  * public Point Position;
-    * public float X, Y, Z;
+- public long timeStamp;
+- public const int jointsSize = 20;
+- public MyJoint[jointsSize] Joints;
+  - public short jointType;
+  - public short trackingState;
+  - public Point Position;
+    - public float X, Y, Z;
