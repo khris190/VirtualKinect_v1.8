@@ -23,7 +23,7 @@ VK client pipe has only 2 public methods as of now
 they are pretty self explanatory: <br/>
 Start() <br/>
 Stop() <br/>
-Every event gets MySkeleton2 object as a parameter, its structure is as follows: <br/>
+Every event gets MySkeleton2 object from pipe server, its structure is as follows: <br/>
     
 - public long timeStamp;
 - public const int jointsSize = 20;
